@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yashaswini Pottabhathula - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+    <style>
+        /* Custom CSS for animations and interactivity */
+        .slide-in-left {
+            animation: slideInLeft 0.5s ease-out;
+        }
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .slide-in-right {
+            animation: slideInRight 0.5s ease-out;
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .scale-up {
+            transition: transform 0.2s ease-in-out;
+        }
+        .scale-up:hover {
+            transform: scale(1.05);
+        }
+        .tilt {
+            transition: transform 0.3s ease-in-out;
+        }
+        .tilt:hover {
+            transform: rotate(5deg);
+        }
+
+        /* Stepped Progress Bar Styles */
+        .stepped-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the steps */
+            padding-left: 0; /* Remove default padding */
+            position: relative;
+        }
+
+        .stepped-progress::before {
+            content: '';
+            position: absolute;
+            left: 50%; /* Center the line */
+            transform: translateX(-50%); /* Precise centering */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #6b7280, #8b5cf6); /* Gray to Purple gradient */
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            position: relative;
+            width: 100%; /* Allow step content to take full width */
+            display: flex; /* Use flexbox for content alignment */
+            flex-direction: column; /* Stack items vertically by default */
+            align-items: flex-start; /* Align items to the start initially */
+        }
+
+        .step:nth-child(odd) {
+            align-items: flex-start; /* Odd steps align to the start (left) */
+        }
+
+        .step:nth-child(even) {
+            align-items: flex-end; /* Even steps align to the end (right) */
+        }
+
+
+        .step-circle {
+            position: absolute;
+            /*left: -1.25rem;  Adjusted in media query for centering */
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: #8b5cf6; /* Purple */
+            border: 2px solid #d1d5db; /* Gray border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .step-circle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+
+
+        .step-content {
+            background-color: gray-800;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /*margin-left: 1rem;  Removed default margin */
+            position: relative;
+            width: calc(100% - 2rem); /* Adjust width to account for potential margin */
+        }
+
+        .step-content::before {
+            content: '';
+            position: absolute;
+            /*left: -0.5rem; Removed default left */
+            top: 2.5rem;
+            width: 1rem;
+            height: 0.125rem;
+            background-color: #8b5cf6;
+        }
+
+        .step:nth-child(odd) .step-content {
+            margin-left: 2rem; /* Push content to the right for odd steps */
+        }
+
+        .step:nth-child(even) .step-content {
+            margin-right: 2rem; /* Push content to the left for even steps */
+        }
+
+        .step:nth-child(odd) .step-content::before {
+            left: -0.5rem;
+        }
+
+        .step:nth-child(even) .step-content::before {
+            right: -0.5rem;
+            left: auto;
+        }
+
+        .company-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .job-title {
+            font-size: 1rem;
+            color: #cbd5e0;
+            margin-bottom: 0.5rem;
+        }
+
+        .date-location {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .location{
+           margin-left: 5rem;
+        }
+
+        .details {
+            font-size: 0.875rem;
+            color: #d1d5db;
+            list-style-position: inside;
+            margin-left: 0;
+        }
+
+        /* Media query to adjust step-circle position for centered line */
+        @media (min-width: 768px) { /* Apply this style on larger screens */
+            .step-circle {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+             .step-content {
+                width: calc(100% - 4rem); /* Adjust width to account for potential margin */
+            }
+            .step:nth-child(odd) .step-content {
+                margin-left: 2rem; /* Push content to the right for odd steps */
+            }
+
+            .step:nth-child(even) .step-content {
+                margin-right: 2rem; /* Push content to the left for even steps */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-purple-900 text-white font-inter">
+    <header class="bg-transparent py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Yashaswini P.
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#about" class="hover:text-blue-300 transition duration-300">About</a></li>
+                    <li><a href="#skills" class="hover:text-blue-300 transition duration-300">Skills</a></li>
+                    <li><a href="#projects" class="hover:text-blue-300 transition duration-300">Projects</a></li>
+                    <li><a href="#experience" class="hover:text-blue-300 transition duration-300">Experience</a></li>
+                    <li><a href="#contact" class="hover:text-blue-300 transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger-btn" class="md:hidden text-gray-300 focus:outline-none" aria-label="Toggle Navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 z-50">
+        <div class="bg-gray-800 w-80 h-full absolute right-0 p-6">
+            <div class="flex justify-end mb-4">
+                <button id="close-menu-btn" class="text-gray-300 focus:outline-none" aria-label="Close Menu">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="block">
+                <ul class="space-y-4">
+                    <li><a href="#about" class="block text-lg text-white hover:text-blue-300 transition duration-300">About</a></li>
+                    <li><a href="#skills" class="block text-lg text-white hover:text-blue-300 transition duration-300">Skills</a></li>
+                    <li><a href="#projects" class="block text-lg text-white hover:text-blue-300 transition duration-300">Projects</a></li>
+                    <li><a href="#experience" class="block text-lg text-white hover:text-blue-300 transition duration-300">Experience</a></li>
+                    <li><a href="#contact" class="block text-lg text-white hover:text-blue-300 transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <section id="home" class="py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div class="max-w-7xl mx-auto text-center space-y-8">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 slide-in-left">
+                Hello, I'm Yashaswini Pottabhathula
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto fade-in">
+                I'm a Full Stack Developer passionate about building scalable and user-friendly web applications.
+            </p>
+            <a href="#projects" class="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300 scale-up">
+                View My Work
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800 rounded-lg shadow-lg">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                About Me
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-gray-300 text-lg sm:text-xl leading-relaxed slide-in-left">
+                    <p class="mb-4">
+                        Hello! I'm Yashaswini, a Full Stack Developer with a strong foundation in building
+                        high-performance web applications. I have a Master's degree in Computer Engineering and
+                        Science from the University of South Florida and over 4+ years of professional experience.
+                    </p>
+                    <p class="mb-4">
+                        I'm passionate about creating seamless user experiences and solving complex technical challenges.
+                        My expertise spans across front-end and back-end technologies, including React.js, Angular,
+                        Node.js, Spring Boot, and AWS.
+                    </p>
+                    <p>
+                        I'm a firm believer in clean, maintainable code and agile methodologies. I'm always eager to
+                        learn new technologies and collaborate with talented teams to deliver innovative solutions.
+                    </p>
+                </div>
+                <div class="text-center rounded-lg shadow-lg scale-up">
+                    <img src="yashas_DP.png" alt="Yashaswini Pottabhathula" class="rounded-lg w-full h-72 object-cover object-top">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Skills
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-left">
+                    <img src="https://via.placeholder.com/50" alt="HTML5" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">HTML5</h3>
+                        <p class="text-gray-400">Proficient</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 fade-in">
+                    <img src="https://via.placeholder.com/50" alt="CSS3" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">CSS3</h3>
+                        <p class="text-gray-400">Proficient</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-right">
+                    <img src="https://via.placeholder.com/50" alt="JavaScript" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">JavaScript</h3>
+                        <p class="text-gray-400">Proficient</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-left">
+                    <img src="https://via.placeholder.com/50" alt="React.js" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">React.js</h3>
+                        <p class="text-gray-400">Experienced</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 fade-in">
+                    <img src="https://via.placeholder.com/50" alt="Angular" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">Angular</h3>
+                        <p class="text-gray-400">Experienced</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-right">
+                    <img src="https://via.placeholder.com/50" alt="Node.js" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">Node.js</h3>
+                        <p class="text-gray-400">Experienced</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-left">
+                    <img src="https://via.placeholder.com/50" alt="Spring Boot" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">Spring Boot</h3>
+                        <p class="text-gray-400">Experienced</p>
+                    </div>
+                </div>
+                 <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 fade-in">
+                    <img src="https://via.placeholder.com/50" alt="AWS" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">AWS</h3>
+                        <p class="text-gray-400">Experienced</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-md p-6 flex items-center space-x-4 slide-in-right">
+                    <img src="https://via.placeholder.com/50" alt="PostgreSQL" class="w-12 h-12">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white">PostgreSQL</h3>
+                        <p class="text-gray-400">Proficient</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800 rounded-lg shadow-lg">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Projects
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 scale-up tilt">
+                    <h3 class="text-xl font-semibold text-white mb-4">Park My Ride</h3>
+                    <p class="text-gray-300 mb-4">
+                        A web platform for users to find, reserve, and manage parking spaces in real-time.
+                        Technologies used: React.js, Tailwind CSS, Spring Boot.
+                    </p>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 transition duration-300 font-semibold">View Project</a>
+                </div>
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 scale-up tilt">
+                    <h3 class="text-xl font-semibold text-white mb-4">Weather App</h3>
+                    <p class="text-gray-300 mb-4">
+                        A responsive web application for real-time weather updates.
+                        Technologies used: React.js, Open Weather Map API.
+                    </p>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 transition duration-300 font-semibold">View Project</a>
+                </div>
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 scale-up tilt">
+                    <h3 class="text-xl font-semibold text-white mb-4">AI Image Generator</h3>
+                    <p class="text-gray-300 mb-4">
+                         A web application to generate images through AI based on user input.
+                          Technologies used: HTML, CSS, JavaScript, AI image generation API.
+                    </p>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 transition duration-300 font-semibold">View Project</a>
+                </div>
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 scale-up tilt">
+                    <h3 class="text-xl font-semibold text-white mb-4">Smart Ticket Booking System</h3>
+                    <p class="text-gray-300 mb-4">
+                        A platform for booking tickets for events, transport, and cinema.
+                        Technologies used: React.js, Angular, Spring Boot, MySQL.
+                    </p>
+                    <a href="#" class="text-blue-400 hover:text-blue-300 transition duration-300 font-semibold">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Experience
+            </h2>
+            <div class="stepped-progress">
+                <div class="step">
+                    <div class="step-circle">1</div>
+                    <div class="step-content">
+                        <h3 class="company-name">EVA ECO SYSTEMS</h3>
+                        <p class="job-title">Full Stack Developer</p>
+                        <div class="date-location">
+                            <span>Tampa, FL</span>
+                            <span>January 2025 - Present</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <div class="step-content">
+                        <h3 class="company-name">ICLOUD TEQ</h3>
+                        <p class="job-title">Full Stack Developer Intern</p>
+                         <div class="date-location">
+                            <span>Tampa, FL</span>
+                            <span>May 2024 - December 2024</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-content">
+                        <h3 class="company-name">ACCENTURE SOLUTIONS PVT LTD</h3>
+                        <p class="job-title">Full Stack Software Engineer</p>
+                        <div class="date-location">
+                            <span>Hyderabad, India</span>
+                            <span>August 2018 - December 2022</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-800 rounded-lg shadow-lg">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Contact Me
+            </h2>
+            <div class="text-center space-y-4">
+                <p class="text-lg text-gray-300">
+                    Feel free to reach out to me for any questions or opportunities.
+                </p>
+                <p class="text-xl text-white">
+                    Email: yashujcd@gmail.com | Phone: +1(813)-897-2015
+                </p>
+                <a href="https://www.linkedin.com/in/yashaswini-pottabhathula/" target="_blank" rel="noopener noreferrer" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition duration-300 scale-up inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6" fill="currentColor" viewBox="0 0 25 25.6">
+                        <path d="M20.51 0H4.49C2.01 0 0 2.01 0 4.49v16.63c0 2.47 2.01 4.48 4.49 4.48h16.02c2.47 0 4.49-2.01 4.49-4.49V4.49C25 2.01 22.99 0 20.51 0zM8.34 20.93h-3.3v-10.9h3.3v10.9zM6.69 8.57c-1.09 0-1.97-.89-1.97-1.97s.88-1.97 1.97-1.97 1.97.88 1.97 1.97-.88 1.97-1.97 1.97zM21.66 20.93h-3.3v-5.56c0-1.33-.52-2.25-1.82-2.25-.99 0-1.6.67-1.86 1.31-.13.23-.17.55-.17.88v5.62h-3.3s.04-8.97 0-10.9h3.3v1.54c.44.67 1.66 1.62 4 1.62 2.9 0 5.07-1.88 5.07-4.7v-1.67h3.3v10.9z"/>
+                    </svg>
+                    Connect on LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+        <p>&copy; 2025 Yashaswini Pottabhathula. All rights reserved.</p>
+    </footer>
+
+    <script>
+        consthamburgerBtn = document.getElementById("hamburger-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenuBtn = document.getElementById("close-menu-btn");
+        const mobileMenuLinks = mobileMenu.querySelectorAll("a");
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle("hidden");
+        }
+
+        hamburgerBtn.addEventListener("click", toggleMobileMenu);
+        closeMenuBtn.addEventListener("click", toggleMobileMenu);
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener("click", toggleMobileMenu);
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && event.target !== hamburgerBtn) {
+                toggleMobileMenu();
+            }
+        });
+
+        function updateActiveNavLink() {
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNavLink);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
